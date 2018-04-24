@@ -12,6 +12,6 @@ node('linux') {
   }
   stage ("DeleteInstance") {
     
-	sh "aws ec2 wait instance-running --instance-id ${result} --region us-east-1"
+	echo ${result}
   }
 }
