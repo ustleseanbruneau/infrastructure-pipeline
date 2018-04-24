@@ -12,6 +12,6 @@ node('linux') {
   }
   stage ("DeleteInstance") {
     
-	echo ${result}
+	echo result
   }
 }
