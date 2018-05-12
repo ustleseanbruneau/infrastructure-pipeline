@@ -15,6 +15,9 @@ node('linux') {
     env.NEW_INST_ID = newInst
   }
   stage ("DeleteInstance") {
+    echo "Wait for new EC2 instance to start - instance id: ${env.NEW_INST_ID}" 
     sh "aws ec2 wait --region us-east-1 instance-running --instance-ids ${env.NEW_INST_ID}"
+    echo "Terminate new EC2 instance - instance id: ${env.NEW_INST_ID}" 
+    sh "aws ec2 terminate-instances --region us-east-1 --instance-ids ${env.NEW_INST_ID}"
   }
 }
