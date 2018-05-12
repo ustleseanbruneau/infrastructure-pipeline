@@ -1,6 +1,9 @@
 properties([pipelineTriggers([githubPush()])])
 node('linux') {
   git url: 'https://github.com/ustleseanbruneau/infrastructure-pipeline.git', branch: 'master'
+  environment {
+      NEW_INST_ID = ''
+  }
   stage('Test') {
     sh "env"
   }
@@ -9,9 +12,9 @@ node('linux') {
   }
   stage ("CreateInstance") {
     def newInst = sh(returnStdout: true, script: "aws ec2 run-instances --image-id ami-467ca739 --count 1 --instance-type t2.micro --key-name awsuspsustkey --security-group-ids sg-01240748 --subnet-id subnet-c16e9ca6 --region us-east-1 | jq -r .'Instances[].InstanceId'").trim()
-    sh "aws ec2 wait --region us-east-1 instance-running --instance-ids '${newInst}'"
+    env.NEW_INST_ID = newInst
   }
   stage ("DeleteInstance") {
-    sh "env"
+    sh "aws ec2 wait --region us-east-1 instance-running --instance-ids ${env.NEW_INST_ID}"
   }
 }
