@@ -11,7 +11,7 @@ node('linux') {
     sh "aws ec2 describe-instances --region us-east-1"
   }
   stage ("CreateInstance") {
-    def newInst = sh(returnStdout: true, script: "aws ec2 run-instances --image-id ami-467ca739 --count 1 --instance-type t2.micro --key-name awsuspsustkey --security-group-ids sg-01240748 --subnet-id subnet-c16e9ca6 --region us-east-1 | jq -r .'Instances[].InstanceId'").trim()
+    def newInst = sh(returnStdout: true, script: "aws ec2 run-instances --image-id ami-467ca739 --count 1 --instance-type t2.micro --key-name awsuspsustkey --security-group-ids sg-065d054f --subnet-id subnet-d7d03f9d --region us-east-1 | jq -r .'Instances[].InstanceId'").trim()
     env.NEW_INST_ID = newInst
   }
   stage ("DeleteInstance") {
